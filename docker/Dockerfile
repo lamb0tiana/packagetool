@@ -39,6 +39,5 @@ RUN ls -al /
 
 
 
-EXPOSE 2375
 ENTRYPOINT ["/entrypoint.sh"]
 
