@@ -10,11 +10,11 @@ use League\OAuth2\Client\Provider\FacebookUser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-
+#[Route("/connect")]
 class FacebookController extends AbstractController
 {
 
-    #[Route("/connect/facebook", name: "connect_facebook_start")]
+    #[Route("/facebook", name: "connect_facebook_start")]
     public function connectAction(ClientRegistry $clientRegistry)
     {
 
@@ -27,7 +27,7 @@ class FacebookController extends AbstractController
 
     }
 
-    #[Route("/connect/facebook/check", name:"connect_facebook_check")]
+    #[Route("/facebook/check", name:"connect_facebook_check")]
     public function connectCheckAction(Request $request, ClientRegistry $clientRegistry)
     {
 
@@ -37,12 +37,11 @@ class FacebookController extends AbstractController
         try {
             /** @var FacebookUser $user */
             $user = $client->fetchUser();
-
-            var_dump($user); die;
+            $content = $user->toArray();
             // ...
         } catch (IdentityProviderException $e) {
-
-            var_dump($e->getMessage()); die;
+            $content = ['error' => $e->getMessage()];
         }
+        return$this->json($content);
     }
 }
